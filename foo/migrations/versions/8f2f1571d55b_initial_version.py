@@ -33,6 +33,12 @@ def _create_shadow_tables(migrate_engine):
     meta.reflect(migrate_engine)
     table_names = list(meta.tables.keys())
 
+    print("Expected:")
+    print("['alembic_version', 'volume_usage_cache']")
+    print()
+    print("Actual:")
+    print(table_names)
+
     meta.bind = migrate_engine
 
     for table_name in table_names:
