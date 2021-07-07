@@ -1,3 +1,4 @@
 oslo.db
 oslo.log
+oslo.utils
 alembic
