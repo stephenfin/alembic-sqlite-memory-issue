@@ -28,9 +28,9 @@ branch_labels = None
 depends_on = None
 
 
-def _create_shadow_tables(migrate_engine):
-    meta = sa.MetaData(migrate_engine)
-    meta.reflect(migrate_engine)
+def _create_shadow_tables(connection):
+    meta = sa.MetaData()
+    meta.reflect(bind=connection)
     table_names = list(meta.tables.keys())
 
     print("Expected:")
@@ -39,10 +39,8 @@ def _create_shadow_tables(migrate_engine):
     print("Actual:")
     print(table_names)
 
-    meta.bind = migrate_engine
-
     for table_name in table_names:
-        table = sa.Table(table_name, meta, autoload=True)
+        table = sa.Table(table_name, meta, autoload_with=connection)
 
         columns = []
         for column in table.columns:
@@ -95,7 +93,7 @@ def upgrade():
         mysql_charset='utf8'
     )
 
-    _create_shadow_tables(bind.engine)
+    _create_shadow_tables(bind)
 
     # TODO(stephenfin): Fix these various bugs in a follow-up
 

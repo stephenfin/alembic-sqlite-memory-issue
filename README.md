@@ -1,4 +1,9 @@
-# Demonstration of oslo.db-alembic bug
+# Demonstration of a possible oslo.db-alembic bug
+
+**Resolution** This wasn't an issue with oslo.db. Instead, we were creating
+multiple connections as part of our migration. This doesn't work with in-memory
+databases. The final commit in this repo contains the fixes. You can view the
+comments from @zzzeek suggesting the fix [here][comments].
 
 There seems to be a weird interaction between oslo.db and alembic. This
 demonstrates this. You can validate this with pytest (unittest would also
@@ -68,3 +73,5 @@ Actual:
 
 So this seems to be an issue with context changing and a new in-memory database
 being created.
+
+[comments]: https://github.com/stephenfin/alembic-sqlite-memory-issue/commit/28f7d6e814b0751e1f743e0abad680e66102d42b
